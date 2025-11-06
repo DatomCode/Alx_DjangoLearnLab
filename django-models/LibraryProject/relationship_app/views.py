@@ -10,12 +10,12 @@ from .models import Book, Library
 
 def lists_all_books(request):
     books = Book.objects.all()
-    return render(request, 'books/lists_book.html', {'books': books})
+    return render(request, 'relationship_app/list_books.html', {'books': books})
 
 
 class LibraryDetailView(DetailView):
     model = Library
-    template_name = "books/library_detail.html"
+    template_name = "relationship_app/library_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
