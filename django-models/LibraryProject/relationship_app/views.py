@@ -9,7 +9,7 @@ from .models import Library
 
 # Create your views here.
 
-def lists_all_books(request):
+def list_books(request):
     books = Book.objects.all()
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
