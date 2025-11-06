@@ -10,14 +10,14 @@ def lists_all_books(request):
     return render(request, 'books/lists_book.html', {'books': books})
 
 
-class LibraryView(DetailView):
+class LibraryDetailView(DetailView):
     model = Library
     template_name = "books/library_detail.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        book = self.get_object()
-        context["books"] = Library.objects.all()
+        context["books"] = self.object.book_set.all()
+        return context
         
     
         
