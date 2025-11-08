@@ -1,10 +1,11 @@
-from django.urls import path, include
-from .views import SignUp
-from .views import list_books, LibraryDetailView
+from django.urls import path
+from .views import list_books, LibraryDetailView, register_view, login_view, logout_view
 
 urlpatterns = [
     path('books/', list_books, name= 'books'),
     path('library/', LibraryDetailView.as_view(), name='library-details'),
-    path('', include()),
-    path('register/', SignUp, name ="register")
+    path('register/', register_view, name='register'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
 ]
+

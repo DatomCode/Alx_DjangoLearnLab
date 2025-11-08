@@ -1,13 +1,11 @@
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login, logout
 from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic import CreateView
 from .models import Book
 from .models import Library
-
-
-
 
 # Create your views here.
 
@@ -26,12 +24,46 @@ class LibraryDetailView(DetailView):
         return context
     
 
-class SignUp(CreateView):
-    form_class = UserCreationForm
-    success_url = reverse_lazy('signup')
-    template_name = 'relationship_app/register.html'
+# Register View
+def register_view(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, 'Registration successful!')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
+
+
+# Login View
+def login_view(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, 'Login successful!')
+            return redirect('list-books')  # redirect to your existing page
+    else:
+        form = AuthenticationForm()
+    return render(request, 'relationship_app/login.html', {'form': form})
+
+
+# Logout View
+def logout_view(request):
+    logout(request)
+    messages.info(request, 'You have been logged out.')
+    return render(request, 'relationship_app/logout.html')
+
 
 
         
     
-        
+
+
+# from django.contrib import messages
+
+
