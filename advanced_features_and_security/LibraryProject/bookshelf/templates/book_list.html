@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+</head>
+<body>
+    <h1>Library Book Collection</h1>
+
+    {# Check if the user has the required permission before displaying the link #}
+    {% if perms.bookshelf.can_create %}
+        <p><a href="{% url 'book_create' %}">Add New Book</a></p>
+    {% else %}
+        <p>You do not have permission to add new books.</p>
+    {% endif %}
+
+    {% if books %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Published Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.published_date|default:"N/A" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No books found in the library.</p>
+    {% endif %}
+</body>
+</html>

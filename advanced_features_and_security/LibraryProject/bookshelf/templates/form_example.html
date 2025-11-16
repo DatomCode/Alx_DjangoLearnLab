@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title|default:"Form Example" }}</title>
+</head>
+<body>
+    <h1>{{ page_title|default:"Submit a Form" }}</h1>
+    
+    <form method="post">
+        {# 🚨 TASK 2: Security Requirement - Must include the CSRF token #}
+        {% csrf_token %} 
+        
+        {{ form.as_p }}
+        
+        <button type="submit">Submit</button>
+    </form>
+
+    <p><a href="{% url 'book_list' %}">Back to Book List</a></p>
+</body>
+</html>
