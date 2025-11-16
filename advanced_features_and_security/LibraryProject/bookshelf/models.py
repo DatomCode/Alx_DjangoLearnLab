@@ -8,6 +8,18 @@ class Book(models.Model):
     author = models.CharField(max_length = 200)
     publication_year = models.IntegerField()
 
+    class Meta:
+        # Define the custom permissions here
+        permissions = [
+            ("can_view", "Can view all books"),
+            ("can_create", "Can create new books"),
+            ("can_edit", "Can edit existing books"),
+            ("can_delete", "Can delete books"),
+        ]
+
+    def __str__(self):
+        return self.title
+
 
 # --- Custom User Manager (Step 3) ---
 
