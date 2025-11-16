@@ -123,3 +123,41 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+
+
+
+# --- Task 2: Security Best Practices Configuration ---
+
+# 1. General Security and Host Settings
+# IMPORTANT: This must be set to False for production!
+DEBUG = False
+
+# Must list all host/domain names that your Django site can serve
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com', '127.0.0.1', 'localhost'] 
+
+# 2. Cookie Security (Step 1 & 2 of Task 3)
+# Forces cookies to only be sent over a secure (HTTPS) connection.
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+# Note: SESSION_COOKIE_HTTPONLY is usually True by default but good to verify.
+SESSION_COOKIE_HTTPONLY = True
+
+
+# 3. Header Protections (Step 1 & 3 of Task 2)
+
+# X_FRAME_OPTIONS: Prevents clickjacking by denying framing of the page.
+# "DENY" prevents framing by any site.
+X_FRAME_OPTIONS = 'DENY' 
+
+# SECURE_CONTENT_TYPE_NOSNIFF: Prevents browsers from trying to guess ('sniff')
+# the content type of a file, mitigating MIME-sniffing attacks.
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# SECURE_BROWSER_XSS_FILTER: Activates the browser's built-in XSS filter.
+# (Note: In recent Django versions, this is largely superseded by default middleware, 
+# but setting it explicitly satisfies the task requirement.)
+SECURE_BROWSER_XSS_FILTER = True
