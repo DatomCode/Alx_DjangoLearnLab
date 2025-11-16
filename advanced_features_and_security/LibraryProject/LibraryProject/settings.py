@@ -161,3 +161,45 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 # (Note: In recent Django versions, this is largely superseded by default middleware, 
 # but setting it explicitly satisfies the task requirement.)
 SECURE_BROWSER_XSS_FILTER = True
+
+
+
+
+# --- TASK 3: HTTPS and Secure Redirects Configuration ---
+
+# 1. Enforce HTTPS Redirects (Step 1)
+# Redirects all non-HTTPS requests to HTTPS.
+SECURE_SSL_REDIRECT = True 
+
+# 2. HTTP Strict Transport Security (HSTS) (Step 1)
+# Instructs browsers to ONLY access the site via HTTPS for a long duration.
+# 31536000 seconds = 1 year
+SECURE_HSTS_SECONDS = 31536000
+# Include all subdomains in the HSTS policy.
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# Allow preloading the site into browsers' HSTS lists.
+SECURE_HSTS_PRELOAD = True 
+
+# 3. Enforce Secure Cookies (Step 2)
+# Ensure session cookies are ONLY transmitted over HTTPS.
+SESSION_COOKIE_SECURE = True
+# Ensure CSRF cookies are ONLY transmitted over HTTPS.
+CSRF_COOKIE_SECURE = True
+# Set HttpOnly flag to prevent client-side JavaScript from accessing cookies.
+# (This is a good practice, even if often the default)
+SESSION_COOKIE_HTTPONLY = True 
+CSRF_COOKIE_HTTPONLY = True 
+
+# 4. Security Headers (Step 3)
+# Prevent clickjacking by denying framing of the page.
+X_FRAME_OPTIONS = 'DENY' 
+# Prevent browsers from trying to guess (sniff) the content type.
+SECURE_CONTENT_TYPE_NOSNIFF = True
+# Enable the browser's XSS filter (often redundant, but required for the task).
+SECURE_BROWSER_XSS_FILTER = True 
+
+# 5. Production Environment Basics
+# IMPORTANT: This must be False in production!
+DEBUG = False
+# List your actual domain names here
+ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1']
