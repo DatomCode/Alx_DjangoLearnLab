@@ -19,7 +19,7 @@ def book_list(request):
 
 # --- Create View ---
 
-# Mandatory requirement: Use raise_exception=True to return 403 Forbidden on failure
+
 @permission_required('bookshelf.can_create', raise_exception=True)
 def book_create(request):
     """
