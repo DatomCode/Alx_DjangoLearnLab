@@ -203,3 +203,6 @@ SECURE_BROWSER_XSS_FILTER = True
 DEBUG = False
 # List your actual domain names here
 ALLOWED_HOSTS = ['yourdomain.com', '127.0.0.1']
+
+SECURE_PROXY_SSL_HEADER = True
+HTTP_X_FORWARDED_PROTO = True
