@@ -24,7 +24,7 @@ class BookAPITests(APITestCase):
         # 4. Define URLs for the API endpoints'
         self.list_url = reverse('book-list')
         self.detail_url = reverse('book-detail', args=[self.book.id])
-        self.create_url = reverse('book-create')
+        self.create_url = reverse('book-create', args=[self.book.id])
         self.update_url = reverse('book-update', args=[self.book.id])
         self.delete_url = reverse('book-delete', args=[self.book.id])
 
