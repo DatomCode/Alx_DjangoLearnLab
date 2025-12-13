@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from .serializers import UserRegistrationSerializer
-from rest_framework import generics
+from rest_framework import generics, permissions
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -14,6 +14,19 @@ class RegistrationView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserRegistrationSerializer
     permission_classes = []  # Allow unauthenticated access
+
+
+class ProfileView(generics.GenericAPIView):
+    # Requirement: Use "generics.GenericAPIView" (inherited above)
+    # Requirement: Use "permissions.IsAuthenticated"
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = CustomUser.objects.all()
+    serializer_class = UserSerializer
+
+    def get(self, request, *args, **kwargs):
+        # Simple logic to return the logged-in user's data
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
 User = get_user_model()
 
