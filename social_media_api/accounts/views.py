@@ -20,8 +20,8 @@ class ProfileView(generics.GenericAPIView):
     # Requirement: Use "generics.GenericAPIView" (inherited above)
     # Requirement: Use "permissions.IsAuthenticated"
     permission_classes = [permissions.IsAuthenticated]
-    queryset = CustomUser.objects.all()
-    serializer_class = UserSerializer
+    queryset = get_user_model().objects.all()
+    serializer_class = UserRegistrationSerializer
 
     def get(self, request, *args, **kwargs):
         # Simple logic to return the logged-in user's data
@@ -33,16 +33,15 @@ User = get_user_model()
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def follow_user(request, user_id):
-    user_to_follow = get_object_or_404(User, id=user_id)
-    if user_to_follow == request.user:
-         return Response({"error": "You cannot follow yourself"}, status=400)
-    
+    user_to_follow = get_object_or_404(get_user_model(), id=user_id)
+    if request.user == user_to_follow:
+        return Response({"error": "Cannot follow yourself"}, status=400)
     request.user.following.add(user_to_follow)
-    return Response({"message": f"You are now following {user_to_follow.username}"})
+    return Response({"message": "Followed successfully"})
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def unfollow_user(request, user_id):
-    user_to_unfollow = get_object_or_404(User, id=user_id)
+    user_to_unfollow = get_object_or_404(get_user_model(), id=user_id)
     request.user.following.remove(user_to_unfollow)
-    return Response({"message": f"You have unfollowed {user_to_unfollow.username}"})
+    return Response({"message": "Unfollowed successfully"})
