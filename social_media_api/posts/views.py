@@ -1,7 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework import viewsets, permissions, filters, generics
-from .models import Post, Comment
+from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
+from notifications.models import Notification
+from rest_framework.decorators import api_view, permission_classes 
+from rest_framework.response import Response 
+from rest_framework.permissions import IsAuthenticated 
+
 
 
 # Create your views here.
@@ -44,3 +49,29 @@ class FeedView(generics.ListAPIView):
         return Post.objects.filter(author__in=following_users).order_by('-created_at')
 
         
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def like_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    like, created = Like.objects.get_or_create(user=request.user, post=post)
+    
+    if created:
+        # Create Notification
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb='liked your post',
+            target=post
+        )
+        return Response({"message": "Post liked"})
+    else:
+        return Response({"message": "You already liked this post"}, status=400)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def unlike_post(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    Like.objects.filter(user=request.user, post=post).delete()
+    return Response({"message": "Post unliked"})
