@@ -10,7 +10,8 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     extra_kwargs ={
         'password' : {'write_only' : True}
     }
-
+    password = serializers.CharField()
+    
     def create(self, validated_data):
 
         user = get_user_model().objects.create_user(**validated_data)
